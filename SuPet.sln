@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainProj", "MainProj\MainProj.csproj", "{125FBE3C-D4CD-4763-B25A-579336335D0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainProj", "MainProj\MainProj.csproj", "{125FBE3C-D4CD-4763-B25A-579336335D0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuPetCore", "SuPetCore\SuPetCore.csproj", "{148AC56E-2779-4DDB-9C58-7FE9092B4B3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{125FBE3C-D4CD-4763-B25A-579336335D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{125FBE3C-D4CD-4763-B25A-579336335D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{125FBE3C-D4CD-4763-B25A-579336335D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148AC56E-2779-4DDB-9C58-7FE9092B4B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148AC56E-2779-4DDB-9C58-7FE9092B4B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148AC56E-2779-4DDB-9C58-7FE9092B4B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148AC56E-2779-4DDB-9C58-7FE9092B4B3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
