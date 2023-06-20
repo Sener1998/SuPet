@@ -21,7 +21,6 @@ namespace SuPetCore
             _imageList = new List<FileInfo>();
             UpdateImageList(dirPath, extension);
         }
-
         public int UpdateImageList(string dirPath, string extension)
         {
             ImageDirPath = dirPath;
@@ -37,12 +36,10 @@ namespace SuPetCore
             ImageNum = _imageList.Count;
             return ImageNum;
         }
-
         public FileInfo GetRandomImage()
         {
             return _imageList[new Random().Next(0, ImageNum)];
         }
-
     }
 
 }

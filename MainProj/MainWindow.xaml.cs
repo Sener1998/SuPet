@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 using WpfAnimatedGif;
 
 namespace MainProj
@@ -26,8 +27,7 @@ namespace MainProj
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly SuPetCore.ImageManager _imageManager;
-
+        private readonly ImageManager _imageManager;
 
         public MainWindow()
         {
@@ -38,21 +38,51 @@ namespace MainProj
             this.WindowStyle = WindowStyle.None;
             this.ResizeMode = ResizeMode.NoResize;
 
-            // 加载Gif
+            // 加载图片
             _imageManager = new(@"D:\Projects\SuPet\Resources", ".gif");
-            LoadImage(_imageManager.GetRandomImage().FullName);
+
+            // 初始化界面
+            InitImage(ref myImage);
+
+            // 测试
+             //ImageManager testManager = new(@"C:\Users\Sener\Desktop\游戏", "");
         }
-        private void LoadImage(string filePath)
+        private void InitImage(ref Image image)
+        {
+            SetImageAnimation(ref image, _imageManager.GetRandomImage().FullName);
+            SetImageContextMenu(ref image);
+        }
+        private void SetImageAnimation(ref Image image, string filePath)
         {
             var bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
             bitmapImage.UriSource = new Uri(filePath);
             bitmapImage.EndInit();
-            ImageBehavior.SetAnimatedSource(myImage, bitmapImage);
+            ImageBehavior.SetAnimatedSource(image, bitmapImage);
         }
-        private void OpenDir(string dirPath)
+        private void SetImageContextMenu(ref Image image)
         {
-            System.Diagnostics.Process.Start("Explorer.exe", dirPath);
+            var GameMenu = new MenuItem { Header = "游戏" };
+            GameMenu.Items.Add(new MenuItem { Header = "Steam"});
+            GameMenu.Items.Add(new MenuItem { Header = "Epic" });
+            foreach (MenuItem item in GameMenu.Items)
+            {
+                item.Click += QuickStart_Click;
+            }
+            image.ContextMenu.Items.Add(GameMenu);
+        }
+        private void QuickStart_Click(object sender, RoutedEventArgs e)
+        {
+            // 待优化
+            if (sender is not MenuItem menuItem) { return; }
+            if (menuItem.Header.ToString() == "Steam")
+            {
+                Process.Start(@"E:\Games\Steam\Steam.exe");
+            }
+            else if(menuItem.Header.ToString() == "Epic")
+            {
+                Process.Start(@"E:\Games\Epic Games\Launcher\Portal\Binaries\Win32\EpicGamesLauncher.exe");
+            }
         }
 
         private void myImage_MouseMove(object sender, MouseEventArgs e)
@@ -64,8 +94,6 @@ namespace MainProj
         }
         private void myImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            OpenDir(_imageManager.ImageDirPath);
         }
-
     }
 }
