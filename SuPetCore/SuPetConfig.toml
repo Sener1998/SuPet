@@ -1,0 +1,15 @@
+﻿# 图像组，将图像分组管理
+[[ImageGroup]]
+name = "mainImage" # 名字，一般将用途作为图像组的名字
+defaultDir = ""    # 默认图像所在的目录，默认目录的本质是将后续图片的path属性前面加上统一的前缀
+isAll = false      # 若为true则会将默认目录下的所有图片加入本图像组，若为false则不是
+
+# 每组图像里的图片
+[[ImageGroup.image]]
+name = "tease"                # 名字，用于检索
+path = "Resources\\tease.gif" # 该图片的位置
+
+[[ImageGroup]]
+name = "randomGroup"
+defaultDir = "Resources"
+isAll = true

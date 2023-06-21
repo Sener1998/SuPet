@@ -10,14 +10,6 @@ namespace SuPetCore
     {
         public QuickStartManager()
         {
-
-
-
         }
-
-
-
-
-
     }
 }

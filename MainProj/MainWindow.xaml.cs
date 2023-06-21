@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using SuPetCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +26,7 @@ namespace MainProj
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ImageManager _imageManager;
+        private readonly SuPetCore.ImageManager _ImageManagerMain;
 
         public MainWindow()
         {
@@ -39,20 +38,22 @@ namespace MainProj
             this.ResizeMode = ResizeMode.NoResize;
 
             // 加载图片
-            _imageManager = new(@"D:\Projects\SuPet\Resources", ".gif");
+            SuPetCore.IConfigParser tomlReader = new SuPetCore.TomlReader();
+            tomlReader.ReadConfig("SuPetConfig.toml");
+            _ImageManagerMain = new(tomlReader.ImageGroupList[0]);
 
             // 初始化界面
-            InitImage(ref myImage);
+            InitImage(ref myImage, _ImageManagerMain);
 
             // 测试
-             //ImageManager testManager = new(@"C:\Users\Sener\Desktop\游戏", "");
+            //ImageManager testManager = new(@"C:\Users\Sener\Desktop\游戏", "");
         }
-        private void InitImage(ref Image image)
+        private void InitImage(ref Image image, in SuPetCore.ImageManager imageManager)
         {
-            SetImageAnimation(ref image, _imageManager.GetRandomImage().FullName);
+            SetImageAnimation(ref image, imageManager.GetImage(0).FullName);
             SetImageContextMenu(ref image);
         }
-        private void SetImageAnimation(ref Image image, string filePath)
+        private static void SetImageAnimation(ref Image image, string filePath)
         {
             var bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
@@ -62,6 +63,7 @@ namespace MainProj
         }
         private void SetImageContextMenu(ref Image image)
         {
+            // 开发中
             var GameMenu = new MenuItem { Header = "游戏" };
             GameMenu.Items.Add(new MenuItem { Header = "Steam"});
             GameMenu.Items.Add(new MenuItem { Header = "Epic" });
@@ -70,16 +72,21 @@ namespace MainProj
                 item.Click += QuickStart_Click;
             }
             image.ContextMenu.Items.Add(GameMenu);
+
+            var CloseMenu = new MenuItem { Header = "关闭" };
+            CloseMenu.Click += (object sender, RoutedEventArgs e) => Close();
+            image.ContextMenu.Items.Add(CloseMenu);
         }
         private void QuickStart_Click(object sender, RoutedEventArgs e)
         {
-            // 待优化
+            // 开发中
             if (sender is not MenuItem menuItem) { return; }
-            if (menuItem.Header.ToString() == "Steam")
+            string? itemName = menuItem.Header.ToString();
+            if (itemName == "Steam")
             {
                 Process.Start(@"E:\Games\Steam\Steam.exe");
             }
-            else if(menuItem.Header.ToString() == "Epic")
+            else if (itemName == "Epic")
             {
                 Process.Start(@"E:\Games\Epic Games\Launcher\Portal\Binaries\Win32\EpicGamesLauncher.exe");
             }
@@ -94,6 +101,8 @@ namespace MainProj
         }
         private void myImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            // 开发中
+            // 互动逻辑
         }
     }
 }
