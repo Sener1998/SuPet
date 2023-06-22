@@ -5,7 +5,12 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>2_cat.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="2_cat.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />

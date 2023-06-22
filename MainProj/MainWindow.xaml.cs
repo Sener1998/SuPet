@@ -26,7 +26,8 @@ namespace MainProj
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly SuPetCore.ImageManager _ImageManagerMain;
+        private readonly SuPetCore.ImageManager _imageManagerAll = new();
+        private readonly SuPetCore.QuickStartManager _quickStartManager = new();
 
         public MainWindow()
         {
@@ -37,20 +38,21 @@ namespace MainProj
             this.WindowStyle = WindowStyle.None;
             this.ResizeMode = ResizeMode.NoResize;
 
-            // 加载图片
+            // 读取配置
             SuPetCore.IConfigParser tomlReader = new SuPetCore.TomlReader();
-            tomlReader.ReadConfig("SuPetConfig.toml");
-            _ImageManagerMain = new(tomlReader.ImageGroupList[0]);
+            if (tomlReader.ReadConfig("SuPetConfig.toml"))
+            {
+                _imageManagerAll = new(tomlReader.ImageGroupList[0]);
+                _quickStartManager = new(tomlReader.MenuList);
+            }
 
             // 初始化界面
-            InitImage(ref myImage, _ImageManagerMain);
-
-            // 测试
-            //ImageManager testManager = new(@"C:\Users\Sener\Desktop\游戏", "");
+            InitImage(ref myImage);
         }
-        private void InitImage(ref Image image, in SuPetCore.ImageManager imageManager)
+
+        private void InitImage(ref Image image)
         {
-            SetImageAnimation(ref image, imageManager.GetImage(0).FullName);
+            SetImageAnimation(ref image, _imageManagerAll.GetRandomImage().FullName);
             SetImageContextMenu(ref image);
         }
         private static void SetImageAnimation(ref Image image, string filePath)
@@ -63,33 +65,55 @@ namespace MainProj
         }
         private void SetImageContextMenu(ref Image image)
         {
-            // 开发中
-            var GameMenu = new MenuItem { Header = "游戏" };
-            GameMenu.Items.Add(new MenuItem { Header = "Steam"});
-            GameMenu.Items.Add(new MenuItem { Header = "Epic" });
-            foreach (MenuItem item in GameMenu.Items)
+            image.ContextMenu = new ContextMenu();
+            foreach (var menu in _quickStartManager.MenuList)
             {
-                item.Click += QuickStart_Click;
+                var menuItem = GetMenuItem(menu);
+                image.ContextMenu.Items.Add(menuItem);
             }
-            image.ContextMenu.Items.Add(GameMenu);
+            _quickStartManager.ClearMenuList();
 
             var CloseMenu = new MenuItem { Header = "关闭" };
             CloseMenu.Click += (object sender, RoutedEventArgs e) => Close();
             image.ContextMenu.Items.Add(CloseMenu);
+
+            
+        }
+        private MenuItem? GetMenuItem(SuPetCore.Menu menu)
+        {
+            if (menu.Name == null || menu.Text == null)
+            {
+                return null;
+            }
+
+            var menuItem = new MenuItem { Name = "MenuItem" + menu.Name, Header = menu.Text };
+            if (menu.SubMenu == null)
+            {
+                if (File.Exists(menu.Path) || Directory.Exists(menu.Path))
+                {
+                    menuItem.Click += QuickStart_Click;
+                }
+            }
+            else
+            {
+
+                foreach (var subMenu in menu.SubMenu)
+                {
+                    var subMenuItem = GetMenuItem(subMenu);
+                    menuItem.Items.Add(subMenuItem);
+                }
+            }
+
+            return menuItem;
         }
         private void QuickStart_Click(object sender, RoutedEventArgs e)
         {
-            // 开发中
-            if (sender is not MenuItem menuItem) { return; }
-            string? itemName = menuItem.Header.ToString();
-            if (itemName == "Steam")
+            if (sender is not MenuItem menuItem)
             {
-                Process.Start(@"E:\Games\Steam\Steam.exe");
+                return;
             }
-            else if (itemName == "Epic")
-            {
-                Process.Start(@"E:\Games\Epic Games\Launcher\Portal\Binaries\Win32\EpicGamesLauncher.exe");
-            }
+            string name = menuItem.Name["MenuItem".Length..];
+            _quickStartManager.StartMenuByName(name);
         }
 
         private void myImage_MouseMove(object sender, MouseEventArgs e)

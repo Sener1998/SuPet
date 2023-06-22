@@ -1,15 +1,46 @@
-﻿# 图像组，将图像分组管理
-[[ImageGroup]]
-name = "mainImage" # 名字，一般将用途作为图像组的名字
-defaultDir = ""    # 默认图像所在的目录，默认目录的本质是将后续图片的path属性前面加上统一的前缀
-isAll = false      # 若为true则会将默认目录下的所有图片加入本图像组，若为false则不是
-
-# 每组图像里的图片
-[[ImageGroup.image]]
-name = "tease"                # 名字，用于检索
-path = "Resources\\tease.gif" # 该图片的位置
-
-[[ImageGroup]]
-name = "randomGroup"
+﻿[[ImageGroup]]
+name = "AllImage"
 defaultDir = "Resources"
-isAll = true
+isAll = true 
+
+[[Menu]]
+name = "Game"
+text = "游戏"
+program = ""
+path = ""
+
+[[Menu.Menu]]
+name = "Steam"
+text = "Steam"
+program = ""
+path = "E:\\Games\\Steam\\Steam.exe"
+
+[[Menu.Menu]]
+name = "UU"
+text = "网易UU加速器"
+program = ""
+path = "E:\\Softwares\\Netease\\UU\\uu.exe"
+
+[[Menu.Menu]]
+name = "StarRail"
+text = "星穹铁道"
+program = ""
+path = "E:\\Games\\Star Rail\\Game\\StarRail.exe"
+
+[[Menu]]
+name = "Notes"
+text = "笔记"
+program = ""
+path = ""
+
+[[Menu.Menu]]
+name = "SuNotes"
+text = "SuNotes"
+program = "C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTE.EXE"
+path = "D:\\SuNotes\\打开笔记本.onetoc2"
+
+[[Menu.Menu]]
+name = "OldNotes"
+text = "Notes"
+program = "Explorer.exe"
+path = "D:\\Notes"

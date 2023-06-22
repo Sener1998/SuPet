@@ -15,11 +15,34 @@ namespace SuPetCore
         public int ImageNum { get => _imageList.Count; }
         public IEnumerable<FileInfo> ImageList { get => _imageList; }
 
-        public ImageManager(ImageGroup imageGroup)
+        public ImageManager()
+        {
+            var imageGroup = new SuPetCore.ImageGroup
+            {
+                Name = "DefaultImageGroup",
+                ImageList = new List<SuPetCore.Image>
+                    {
+                        new SuPetCore.Image
+                        {
+                            Name = "DefaultImage",
+                            Path = @"Resources\happy.gif"
+                        }
+                    }
+            };
+
+            ImportData(imageGroup);
+        }
+
+        public ImageManager(in ImageGroup imageGroup)
+        {
+            ImportData(imageGroup);
+        }
+
+        public void ImportData(in ImageGroup imageGroup)
         {
             string dirPath = imageGroup.DefaultDir ?? "";
 
-            if (imageGroup.IsAll == true)
+            if (imageGroup.IsAll)
             {
                 var dirInfo = new DirectoryInfo(dirPath);
                 foreach (FileInfo file in dirInfo.GetFiles())
@@ -45,7 +68,7 @@ namespace SuPetCore
             }
         }
 
-        public static bool IsImage(FileInfo file)
+        public static bool IsImage(in FileInfo file)
         {
             return file.Extension switch
             {

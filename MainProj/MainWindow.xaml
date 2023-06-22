@@ -7,9 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="350" Background="{x:Null}">
 
-    <Image x:Name="myImage" HorizontalAlignment="Center" Height="350" Width="350" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,0,0" MouseMove="myImage_MouseMove" MouseLeftButtonUp="myImage_MouseLeftButtonUp">
-        <Image.ContextMenu>
-            <ContextMenu></ContextMenu>
-        </Image.ContextMenu>
-    </Image>
+    <Image x:Name="myImage" HorizontalAlignment="Center" Height="350" Width="350" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,0,0" MouseMove="myImage_MouseMove" MouseLeftButtonUp="myImage_MouseLeftButtonUp" />
+
 </Window>
