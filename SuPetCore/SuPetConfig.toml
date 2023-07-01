@@ -1,46 +1,74 @@
-﻿[[ImageGroup]]
-name = "AllImage"
-defaultDir = "Resources"
-isAll = true 
+﻿# --------------- 图片配置 --------------- #
 
+# --------------- 初始界面 --------------- #
+[[ImageGroup]]
+name = "InitImage"
+defaultDir = ""
+isAll = false
+[[ImageGroup.image]]
+path = "Resources\\Pikachu.gif"
+
+
+
+
+# --------------- 快速启动项配置 --------------- #
+
+# --------------- 游戏 --------------- #
 [[Menu]]
 name = "Game"
 text = "游戏"
+isNeedAP = false
 program = ""
 path = ""
-
 [[Menu.Menu]]
 name = "Steam"
 text = "Steam"
+isNeedAP = false
 program = ""
 path = "E:\\Games\\Steam\\Steam.exe"
-
 [[Menu.Menu]]
 name = "UU"
 text = "网易UU加速器"
+isNeedAP = true
 program = ""
 path = "E:\\Softwares\\Netease\\UU\\uu.exe"
-
 [[Menu.Menu]]
 name = "StarRail"
 text = "星穹铁道"
+isNeedAP = true
 program = ""
 path = "E:\\Games\\Star Rail\\Game\\StarRail.exe"
 
+# --------------- 工具 --------------- #
 [[Menu]]
-name = "Notes"
-text = "笔记"
+name = "Tool"
+text = "工具"
+isNeedAP = false
 program = ""
 path = ""
+[[Menu.Menu]]
+name = "Clash"
+text = "Clash"
+isNeedAP = false
+program = ""
+path = "E:\\Softwares\\Clash\\Clash for Windows\\Clash for Windows.exe"
 
+# --------------- 笔记 --------------- #
+[[Menu]]
+name = "Note"
+text = "笔记"
+isNeedAP = false
+program = ""
+path = ""
 [[Menu.Menu]]
 name = "SuNotes"
 text = "SuNotes"
+isNeedAP = false
 program = "C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTE.EXE"
 path = "D:\\SuNotes\\打开笔记本.onetoc2"
-
 [[Menu.Menu]]
 name = "OldNotes"
 text = "Notes"
+isNeedAP = false
 program = "Explorer.exe"
 path = "D:\\Notes"

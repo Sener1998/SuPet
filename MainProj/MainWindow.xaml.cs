@@ -1,29 +1,26 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
+using System.Diagnostics.PerformanceData;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Serialization;
 using WpfAnimatedGif;
+
+static class ConstConfig
+{
+    public const string WindowsConfigPath = "WindowsConfig.log";
+    public const string SuPetConfigPath = "SuPetConfig.toml";
+}
 
 namespace MainProj
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
     public partial class MainWindow : Window
     {
         private readonly SuPetCore.ImageManager _imageManagerAll = new();
@@ -31,33 +28,48 @@ namespace MainProj
 
         public MainWindow()
         {
-            InitializeComponent();
-
             // 设置窗口
-            this.AllowsTransparency = true;
-            this.WindowStyle = WindowStyle.None;
-            this.ResizeMode = ResizeMode.NoResize;
+            try
+            {
+                StreamReader streamReader = new(ConstConfig.WindowsConfigPath);
+                WindowStartupLocation = WindowStartupLocation.Manual;
+                Left = Double.Parse(streamReader.ReadLine() ?? "0");
+                Top = Double.Parse(streamReader.ReadLine() ?? "0");
+                streamReader.Close();
+            }
+            catch
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
+            AllowsTransparency = true;
+            WindowStyle = WindowStyle.None;
+            ResizeMode = ResizeMode.NoResize;
+            InitializeComponent();
 
             // 读取配置
             SuPetCore.IConfigParser tomlReader = new SuPetCore.TomlReader();
-            if (tomlReader.ReadConfig("SuPetConfig.toml"))
+            if (tomlReader.ReadConfig(ConstConfig.SuPetConfigPath))
             {
                 _imageManagerAll = new(tomlReader.ImageGroupList[0]);
                 _quickStartManager = new(tomlReader.MenuList);
             }
+            else
+            {
+                ExitWithError();
+            }
 
             // 初始化界面
-            InitImage(ref myImage);
+            InitImage(ref MainImage);
         }
 
         private void InitImage(ref Image image)
         {
-            SetImageAnimation(ref image, _imageManagerAll.GetRandomImage().FullName);
+            SetImageAnimation(ref image, _imageManagerAll.GetRandomImage());
             SetImageContextMenu(ref image);
         }
         private static void SetImageAnimation(ref Image image, string filePath)
         {
-            var bitmapImage = new BitmapImage();
+            BitmapImage bitmapImage = new();
             bitmapImage.BeginInit();
             bitmapImage.UriSource = new Uri(filePath);
             bitmapImage.EndInit();
@@ -73,11 +85,9 @@ namespace MainProj
             }
             _quickStartManager.ClearMenuList();
 
-            var CloseMenu = new MenuItem { Header = "关闭" };
+            MenuItem CloseMenu = new() { Header = "关闭" };
             CloseMenu.Click += (object sender, RoutedEventArgs e) => Close();
             image.ContextMenu.Items.Add(CloseMenu);
-
-            
         }
         private MenuItem? GetMenuItem(SuPetCore.Menu menu)
         {
@@ -86,7 +96,7 @@ namespace MainProj
                 return null;
             }
 
-            var menuItem = new MenuItem { Name = "MenuItem" + menu.Name, Header = menu.Text };
+            MenuItem menuItem = new() { Name = "MenuItem" + menu.Name, Header = menu.Text };
             if (menu.SubMenu == null)
             {
                 if (File.Exists(menu.Path) || Directory.Exists(menu.Path))
@@ -96,7 +106,6 @@ namespace MainProj
             }
             else
             {
-
                 foreach (var subMenu in menu.SubMenu)
                 {
                     var subMenuItem = GetMenuItem(subMenu);
@@ -116,17 +125,31 @@ namespace MainProj
             _quickStartManager.StartMenuByName(name);
         }
 
-        private void myImage_MouseMove(object sender, MouseEventArgs e)
+        private void MainImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            // 交互逻辑
+        }
+
+        private void MainImage_MouseMove(object sender, MouseEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
                 DragMove();
             }
         }
-        private void myImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+
+        private void Window_Closed(object sender, EventArgs e)
         {
-            // 开发中
-            // 互动逻辑
+            StreamWriter streamWrite = new(ConstConfig.WindowsConfigPath);
+            streamWrite.WriteLine(Left);
+            streamWrite.WriteLine(Top);
+            streamWrite.Close();
+        }
+
+        private static void ExitWithError()
+        {
+            MessageBox.Show("配置读取失败！");
+            Environment.Exit(0);
         }
     }
 }

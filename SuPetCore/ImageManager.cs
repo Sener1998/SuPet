@@ -1,38 +1,17 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Xml.Linq;
-using System.Runtime;
-using System.Windows.Media.Media3D;
 
 namespace SuPetCore
 {
     public class ImageManager
     {
-        private readonly List<FileInfo> _imageList = new();
+        private readonly List<string> _imageList = new();
 
         public int ImageNum { get => _imageList.Count; }
-        public IEnumerable<FileInfo> ImageList { get => _imageList; }
+        public IEnumerable<string> ImageList { get => _imageList; }
 
-        public ImageManager()
-        {
-            var imageGroup = new SuPetCore.ImageGroup
-            {
-                Name = "DefaultImageGroup",
-                ImageList = new List<SuPetCore.Image>
-                    {
-                        new SuPetCore.Image
-                        {
-                            Name = "DefaultImage",
-                            Path = @"Resources\happy.gif"
-                        }
-                    }
-            };
-
-            ImportData(imageGroup);
-        }
-
+        public ImageManager() { }
         public ImageManager(in ImageGroup imageGroup)
         {
             ImportData(imageGroup);
@@ -44,12 +23,12 @@ namespace SuPetCore
 
             if (imageGroup.IsAll)
             {
-                var dirInfo = new DirectoryInfo(dirPath);
+                DirectoryInfo dirInfo = new(dirPath);
                 foreach (FileInfo file in dirInfo.GetFiles())
                 {
                     if (IsImage(file))
                     {
-                        _imageList.Add(file);
+                        _imageList.Add(file.FullName);
                     }
                 }
             }
@@ -58,11 +37,10 @@ namespace SuPetCore
                 if (imageGroup.ImageList == null) { return; }
                 foreach (var image in imageGroup.ImageList)
                 {
-                    image.Path = dirPath + image.Path;
-                    var file = new FileInfo(image.Path);
+                    FileInfo file = new((dirPath == "" ? dirPath : (dirPath + "\\") ) + image);
                     if (file.Exists && IsImage(file))
                     {
-                        _imageList.Add(file);
+                        _imageList.Add(file.FullName);
                     }
                 }
             }
@@ -77,17 +55,15 @@ namespace SuPetCore
             };
         }
 
-        public FileInfo GetRandomImage()
+        public string GetRandomImage()
         {
             return _imageList[new Random().Next(0, ImageNum)];
         }
 
-        public FileInfo GetImage(int idx)
+        public string GetImage(int idx = 0)
         {
             idx  = idx >= ImageNum ? idx : 0;
             return _imageList[idx];
         }
-
-
     }
 }

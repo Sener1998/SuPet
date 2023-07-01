@@ -14,17 +14,21 @@ namespace SuPetCore
     {
         private readonly List<ImageGroup> _imageGroupList = new();
         private readonly List<Menu> _menuList = new();
-        List<ImageGroup> IConfigParser.ImageGroupList { get { return _imageGroupList; } }
-        List<Menu> IConfigParser.MenuList { get { return _menuList; } }
+        List<ImageGroup> IConfigParser.ImageGroupList { get => _imageGroupList; }
+        List<Menu> IConfigParser.MenuList { get => _menuList; }
 
         bool IConfigParser.ReadConfig(in string path)
         {
-            var config = Toml.ReadFile(path);
-            if (config == null) { return  false; }
-
-            GetImageGroupList(config);
-            GetMenuList(config);
-
+            try
+            {
+                var config = Toml.ReadFile(path);
+                GetImageGroupList(config);
+                GetMenuList(config);
+            }
+            catch
+            {
+                return false;
+            }
             return true;
         }
 
@@ -46,11 +50,11 @@ namespace SuPetCore
 
                 if (!imageGroup.IsAll)
                 {
-                    imageGroup.ImageList = new List<Image>();
+                    imageGroup.ImageList = new List<string>();
                     var imageList = item.Get<TomlTableArray>("image");
                     foreach (var image in imageList.Items)
                     {
-                        imageGroup.ImageList.Add(new Image { Name = image.Get<string>("name"), Path = image.Get<string>("path") });
+                        imageGroup.ImageList.Add(image.Get<string>("path"));
                     }
                 }
 
@@ -76,6 +80,7 @@ namespace SuPetCore
             {
                 menu.Name = configTable.Get<string>("name");
                 menu.Text = configTable.Get<string>("text");
+                menu.IsNeedAP = configTable.Get<bool>("isNeedAP");
                 menu.Program = configTable.Get<string>("program");
                 menu.Path = configTable.Get<string>("path");
                 subMenuTables = configTable.Get<TomlTableArray>("Menu");

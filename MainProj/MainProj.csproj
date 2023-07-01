@@ -5,12 +5,9 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>2_cat.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\pikachu.ico</ApplicationIcon>
+    <AssemblyName>SuPet</AssemblyName>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="2_cat.ico" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
@@ -27,13 +24,12 @@
     <None Update="Resources\happy.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Pikachu.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\tease.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>

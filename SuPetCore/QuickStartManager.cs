@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace SuPetCore
 {
@@ -49,7 +43,7 @@ namespace SuPetCore
         public void StartMenuByName(in string name)
         {
             var menu = FindMenu(name);
-            if (menu != null)
+            if (menu != null) 
             {
                 StartMenu(menu);
             }
@@ -70,14 +64,32 @@ namespace SuPetCore
             if (menu.SubMenu == null && menu.Path != null)
             {
                 menu.Program ??= "";
-                if (menu.Program == "")
+                ProcessStartInfo startInfo = new();
+                if (menu.IsNeedAP)
                 {
-                    Process.Start(menu.Path);
+                    startInfo.WorkingDirectory = Path.GetDirectoryName(menu.Path);
+                    startInfo.UseShellExecute = true;
+                    startInfo.Verb = "runas";
+                    startInfo.FileName = Path.GetFileName(menu.Path);
                 }
                 else
                 {
-                    Process.Start(menu.Program, menu.Path);
+                    if (menu.Program == "")
+                    {
+                        startInfo.FileName = menu.Path;
+                    }
+                    else
+                    {
+                        startInfo.FileName = menu.Program;
+                        startInfo.Arguments = menu.Path;
+                    }
                 }
+
+                try
+                {
+                    Process.Start(startInfo);
+                }
+                catch { }
             }
         }
 

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MainProj"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="350" Background="{x:Null}">
+        Title="MainWindow" Height="250" Width="250" Background="{x:Null}" Closed="Window_Closed">
 
-    <Image x:Name="myImage" HorizontalAlignment="Center" Height="350" Width="350" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,0,0" MouseMove="myImage_MouseMove" MouseLeftButtonUp="myImage_MouseLeftButtonUp" />
+    <Image x:Name="MainImage" HorizontalAlignment="Center" Height="250" Width="250" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,0,0" MouseLeftButtonUp="MainImage_MouseLeftButtonUp" MouseMove="MainImage_MouseMove" />
 
 </Window>
