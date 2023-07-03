@@ -1,10 +1,10 @@
 # SuPet
 
+[![SuPet](https://img.shields.io/badge/SuPet-Alpha%20v0.1.0-green)](https://github.com/Sener1998/SuPet)
+
 由于本人眼神不好，总是一眼找不到想打开的快捷方式。
 
 所以写一个小程序将常用的软件及文件夹集中起来并分好类。
-
-[![SuPet](https://img.shields.io/badge/SuPet-Alpha%20v0.1.0-green)](https://github.com/Sener1998/SuPet)
 
 ---
 
