@@ -28,6 +28,9 @@ namespace MainProj
 
         public MainWindow()
         {
+            double width = 250;
+            double height = 250;
+
             // 设置窗口
             try
             {
@@ -35,6 +38,8 @@ namespace MainProj
                 WindowStartupLocation = WindowStartupLocation.Manual;
                 Left = Double.Parse(streamReader.ReadLine() ?? "0");
                 Top = Double.Parse(streamReader.ReadLine() ?? "0");
+                width = Double.Parse(streamReader.ReadLine() ?? "250");
+                height = Double.Parse(streamReader.ReadLine() ?? "250");
                 streamReader.Close();
             }
             catch
@@ -45,6 +50,11 @@ namespace MainProj
             WindowStyle = WindowStyle.None;
             ResizeMode = ResizeMode.NoResize;
             InitializeComponent();
+
+            Width = width;
+            Height = height;
+            MainImage.Width = width;
+            MainImage.Height = height;
 
             // 读取配置
             SuPetCore.IConfigParser tomlReader = new SuPetCore.TomlReader();
@@ -57,6 +67,8 @@ namespace MainProj
             {
                 ExitWithError();
             }
+
+
 
             // 初始化界面
             InitImage(ref MainImage);
@@ -143,6 +155,8 @@ namespace MainProj
             StreamWriter streamWrite = new(ConstConfig.WindowsConfigPath);
             streamWrite.WriteLine(Left);
             streamWrite.WriteLine(Top);
+            streamWrite.WriteLine(Width);
+            streamWrite.WriteLine(Height);
             streamWrite.Close();
         }
 
